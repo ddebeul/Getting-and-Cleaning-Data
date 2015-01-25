@@ -17,9 +17,9 @@ subject_merge <- rbind(read.table("train/subject_train.txt"), read.table("test/s
 # 2. Extracts only the measurements on the mean and standard deviation for each measurement.
 
 features <- read.table("features.txt")
-indices_of_good_features <- grep("-mean\\(\\)|-std\\(\\)", features[, 2])
-X_merge <- X_merge[, indices_of_good_features]
-names(X_merge) <- features[indices_of_good_features, 2]
+Gfeatures <- grep("-mean\\(\\)|-std\\(\\)", features[, 2])
+X_merge <- X_merge[, Gfeatures]
+names(X_merge) <- features[Gfeatures, 2]
 names(X_merge) <- gsub("\\(|\\)", "", names(X_merge))
 names(X_merge) <- tolower(names(X_merge))
 
@@ -34,7 +34,7 @@ names(Y_merge) <- "activity"
 
 names(subject_merge) <- "subject"
 cleaned <- cbind(subject_merge, Y_merge, X_merge)
-write.table(cleaned, "merged_clean_data.txt")
+write.csv2(cleaned,file="merged_clean_data.csv")
 
 # 5. Creates a 2nd, independent tidy data set with the average of each variable for each activity and each subject.
 
@@ -54,4 +54,5 @@ for (s in 1:numSubjects) {
                 row = row+1
         }
 }
-write.table(result, "average.txt")
+write.csv2(result,file="average.csv")
+
